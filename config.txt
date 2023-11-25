@@ -1,0 +1,3 @@
+silent_mode=True
+logging_enabled=True
+log_chatmessages=True
