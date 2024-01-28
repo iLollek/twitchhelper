@@ -1,6 +1,6 @@
 # TwitchHelper - Made by iLollek
 # CYBER TRANCE
-# I write better Code.
+# "I write better Code", he said. And thus, wrote another unusual Comment Line which will get lost once he compiles. Sad to see to be honest.
 
 # General Imports
 import os
@@ -94,8 +94,13 @@ print("Connection to Twitch API Successful.")
 
 while True:
     message = irc.recv(2048).decode('utf-8')
+    if message.startswith('PING'):
+        # (iL) 28.01.2024 - If we don't respond to pings we get disconnected and spammed with empty strings.
+        irc.send("PONG\r\n".encode('utf-8'))
+        print(f'Sent PONG-Response.')
     parsed_message = chatreadingmodule.parse_message(message, CLIENT_ID, CLIENT_SECRET)
     if parsed_message != None:
+        message_counter += 1
         print(parsed_message)
         if config["log_chatmessages"]:
             f = open(config["chatmessage_log_file_path"], "a")
@@ -103,6 +108,5 @@ while True:
             f.close()
     if config["logging_enabled"]:
         logging.info(parsed_message)
-    message_counter += 1
     os.system(f'title twitchhelper - Hook: {CHANNEL} - Viewers: {viewercount} - Messages: {message_counter}')
     
